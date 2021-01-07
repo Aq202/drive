@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferencia de Archivos</title>
+
+    <link rel="stylesheet" href="fileTransfer.css">
+    <script src="uploadFiles.js"></script>
+    <script src="fileExplorer.js"></script>
+    <script src="pathClass.js"></script>
+</head>
+
+<body>
+    <h1 class="title">Transferencia de archivos</h1>
+
+    <form method="POST" id="uploadForm" action="/uploadFile" enctype="multipart/form-data">
+
+        <div id="upload-button">
+            <input type="file" name="file" multiple>
+            <span>SUBIR</span>
+        </div>
+
+        <!-- <div class="loading-section">
+            <div class="loading-bar">
+                <div></div>
+                <span></span>
+            </div>
+            <input type="button" value="Cancelar" class="cancel-button"/>
+        </div>-->
+
+        <div id="upload-section">
+            <div>
+            </div>
+
+            <input type="submit" name="send" id="send" value="Subir archivos">
+            <input type="button" id="cancel" value="Cancelar">
+        </div>
+    </form>
+
+    <h1 class="title">Explorador de archivos</h1>
+    <div id="explorer-section">
+        <div class="path"> </div>
+
+        <div id="filesList">
+            <!-- <div>
+                <div class="icon"></div>
+                <div class="file-name">
+                    <span class="name">1607468441572-CARTA DE INGRESOS - MANFREDO MORALES</span>
+                    <span class="ext">.pdf</span>
+                </div>
+            </div> -->
+        </div>
+
+    </div>
+</body>
+
+</html>
