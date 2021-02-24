@@ -1,12 +1,15 @@
 class PathClass {
 
-    static actualPath = ""
+    static actualPath = null;
 
-    constructor(path, name) {
+    constructor(path, name, loadFiles) {
         this.path = path;
         this.name = name;
         this.createPathElement()
-        Archivo.setFilesList(this.path);
+
+        if (loadFiles !== false) {
+            Archivo.setFilesList(this.path);
+        }
     }
 
     createPathElement() {
@@ -23,16 +26,17 @@ class PathClass {
         if (obj !== undefined) {
             obj.addEventListener("click", e => {
                 Archivo.setFilesList(this.path);
-                PathClass.showPath(this.path)
-                PathClass.actualPath = this.path + "/"
-                console.log(this.path)
+                PathClass.showPath(this.path, this.name)
             })
         }
     }
 
-    static showPath(path) {
+    static showPath(path, name) {
 
-        PathClass.actualPath = path + "/"
+        PathClass.actualPath = {
+            path: path + "/",
+            name: name
+        }
 
         let pathSectionItems = document.querySelectorAll("#explorer-section .path span:not(:first-child)")
         if (pathSectionItems) {

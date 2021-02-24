@@ -76,7 +76,7 @@ class Archivo {
             container.addEventListener("click", e => {
                 try {
                     if (this.pressKey === true) {
-                        PathClass.showPath(this.path)
+                        PathClass.showPath(this.path, this.name)
                     }
                 } catch (ex) { }
             })
@@ -88,7 +88,6 @@ class Archivo {
         const mouseDown = e => {
 
             setTimeout(() => {
-                console.log("Presionado")
                 this.pressKey = false;
             }, 500)
         }

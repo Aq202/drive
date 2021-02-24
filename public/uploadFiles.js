@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", e => {
     document.querySelector("#upload-button > input").addEventListener("change", e => {
 
         currentFiles = e.currentTarget.files;
-        console.log(currentFiles)
         hideLoadingPanel();
 
         //agregando lista de archivos seleccionados
@@ -39,13 +38,37 @@ document.addEventListener("DOMContentLoaded", e => {
         hideUploadPanel();
         document.getElementById("upload-section").style.display = "none";
     })
+
+    document.getElementById("reload").addEventListener("click", e => {
+        try {
+
+            document.querySelector("div.path").innerHTML = "";
+
+            if (PathClass.actualPath.path != "" && PathClass.actualPath.path != "/" && PathClass.actualPath.path != undefined) {
+                new PathClass("", "Archivos", false)
+                new PathClass(PathClass.actualPath.path, PathClass.actualPath.name)
+            } else {
+                new PathClass("", "Archivos")
+            }
+        } catch (ex) {
+            new PathClass("", "Archivos")
+        }
+    })
+
+
+
+
 })
 
 
 const uploadFile = form => {
     let request = new XMLHttpRequest();
-    let path = PathClass.actualPath.replaceAll("/", "---");
     let loadingBar = document.createElement("DIV");
+
+    let path = "";
+    try {
+        path = PathClass.actualPath.path.replaceAll("/", "---");
+    } catch (ex) { }
 
     request.upload.addEventListener("loadstart", e => {
 
