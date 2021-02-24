@@ -43,10 +43,10 @@ document.addEventListener("DOMContentLoaded", e => {
         try {
 
             document.querySelector("div.path").innerHTML = "";
-
-            if (PathClass.actualPath.path != "" && PathClass.actualPath.path != "/" && PathClass.actualPath.path != undefined) {
+            console.log(PathClass.actualPath)
+            if (PathClass.actualPath != "" && PathClass.actualPath != "/" && PathClass.actualPath != null) {
                 new PathClass("", "Archivos", false)
-                new PathClass(PathClass.actualPath.path, PathClass.actualPath.name)
+                PathClass.showPath(PathClass.actualPath, true)
             } else {
                 new PathClass("", "Archivos")
             }
@@ -67,7 +67,8 @@ const uploadFile = form => {
 
     let path = "";
     try {
-        path = PathClass.actualPath.path.replaceAll("/", "---");
+        path = PathClass.actualPath
+        path = PathClass.actualPath.replaceAll("/", "---");
     } catch (ex) { }
 
     request.upload.addEventListener("loadstart", e => {

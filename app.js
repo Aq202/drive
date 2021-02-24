@@ -49,7 +49,8 @@ app.post('/getFilesList', (req, res) => {
     }
 
     fs.readdir(route, (err, files) => {
-        if (err) { res.send({ state: false }) }
+        if (err) { return res.send({ state: false }) }
+
 
         const result = [];
         files.forEach(file => {

@@ -31,12 +31,10 @@ class PathClass {
         }
     }
 
-    static showPath(path, name) {
+    static showPath(path) {
 
-        PathClass.actualPath = {
-            path: path + "/",
-            name: name
-        }
+        PathClass.actualPath = path + "/"
+        PathClass.actualPath = PathClass.actualPath.replaceAll("//", "/")
 
         let pathSectionItems = document.querySelectorAll("#explorer-section .path span:not(:first-child)")
         if (pathSectionItems) {
@@ -44,11 +42,19 @@ class PathClass {
         }
 
         let individualPath = "";
+        let pathModules = path.replaceAll("//", "/").split("/").filter(item => item != "")
 
-        for (name of path.split("/")) {
+        for (let cont in pathModules) {
+            let name = pathModules[cont]
             if (name.trim() != "") {
                 individualPath += `${name}/`;
-                new PathClass(individualPath, name)
+
+                if (cont == pathModules.length - 1) {
+                    new PathClass(individualPath, name)
+                } else {
+                    new PathClass(individualPath, name, false)
+                }
+
             }
         }
     }
