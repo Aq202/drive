@@ -24,12 +24,15 @@ class PathClass {
             obj.addEventListener("click", e => {
                 Archivo.setFilesList(this.path);
                 PathClass.showPath(this.path)
+                PathClass.actualPath = this.path + "/"
                 console.log(this.path)
             })
         }
     }
 
     static showPath(path) {
+
+        PathClass.actualPath = path + "/"
 
         let pathSectionItems = document.querySelectorAll("#explorer-section .path span:not(:first-child)")
         if (pathSectionItems) {

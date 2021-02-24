@@ -1,3 +1,5 @@
+let currentFiles = null;
+
 document.addEventListener("DOMContentLoaded", e => {
 
 
@@ -11,13 +13,17 @@ document.addEventListener("DOMContentLoaded", e => {
 
     })
 
+
+
     document.querySelector("#upload-button > input").addEventListener("change", e => {
 
+        currentFiles = e.currentTarget.files;
+        console.log(currentFiles)
         hideLoadingPanel();
 
         //agregando lista de archivos seleccionados
         const fragment = document.createDocumentFragment();
-        for (file of e.currentTarget.files) {
+        for (file of currentFiles) {
             let span = document.createElement("SPAN");
             span.innerText = file.name;
             fragment.appendChild(span);
@@ -38,6 +44,7 @@ document.addEventListener("DOMContentLoaded", e => {
 
 const uploadFile = form => {
     let request = new XMLHttpRequest();
+    let path = PathClass.actualPath.replaceAll("/", "---");
     let loadingBar = document.createElement("DIV");
 
     request.upload.addEventListener("loadstart", e => {
@@ -79,6 +86,17 @@ const uploadFile = form => {
             loadingBar.querySelector(".loading-bar span").innerText = "COMPLETADO";
         }
         document.querySelector("#upload-button").removeAttribute("disabled")
+
+
+        //cargando los iconos de los archivos
+        console.log(currentFiles)
+        if (currentFiles !== null) {
+            for (file of currentFiles) {
+                let name = file.name.replace(file.name.replace(/^.*\./, ''), "")
+                new Archivo(name, path + file.name, false, file.name.replace(/^.*\./, ''))
+            }
+        }
+
     })
 
     request.upload.addEventListener("loadend", e => {
@@ -90,8 +108,12 @@ const uploadFile = form => {
     })
 
 
+    if (path !== "" && path != undefined && path != null) {
+        request.open('post', '/uploadFile/' + path);
+    } else {
+        request.open('post', '/uploadFile/*');
+    }
 
-    request.open('post', '/uploadFile');
     request.send(new FormData(form))
 }
 
@@ -102,7 +124,6 @@ const hideLoadingPanel = () => {
 }
 const hideUploadPanel = () => {
     //eliminando panel de subida
-    document.querySelector("#upload-button > input").value = "";
     document.querySelector("#upload-button").removeAttribute("disabled")
     document.querySelector("#upload-section > div").innerHTML = "";
 }

@@ -12,6 +12,7 @@ class Archivo {
         this.path = path
         this.isDirectory = isDirectory;
         this.ext = ext;
+        this.pressKey = true;
         this.selectImage();
         this.addFile();
     }
@@ -57,35 +58,7 @@ class Archivo {
 
     }
 
-    download() {
 
-        let url = "/download/" + this.path.replaceAll("/", "---");;
-        window.location = url;
-    }
-
-    rename(newName) {
-        let info = {
-            ruta: this.path,
-            newName: newName
-        }
-        fetch("/rename", {
-            method: "POST",
-            body: JSON.stringify(info),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(r => {
-                console.log(r)
-                r.text()
-            })
-            .then(() => {
-
-                alert("se renombró")
-
-            }).catch(err => console.warn("Error al renombrar el archivo::", err))
-
-    }
 
     addEvents(container) {
 
@@ -94,7 +67,7 @@ class Archivo {
         if (this.isDirectory == false) {
             container.addEventListener("click", e => {
                 try {
-                    if (pressKey === true) {
+                    if (this.pressKey === true) {
                         this.download();
                     }
                 } catch (e) { }
@@ -102,7 +75,7 @@ class Archivo {
         } else {
             container.addEventListener("click", e => {
                 try {
-                    if (pressKey === true) {
+                    if (this.pressKey === true) {
                         PathClass.showPath(this.path)
                     }
                 } catch (ex) { }
@@ -110,13 +83,13 @@ class Archivo {
         }
 
         //opcion de mostrar/ocultar botones ocultos
-        var pressKey = true;
+
 
         const mouseDown = e => {
 
             setTimeout(() => {
                 console.log("Presionado")
-                pressKey = false;
+                this.pressKey = false;
             }, 500)
         }
 
@@ -125,7 +98,7 @@ class Archivo {
 
         const mouseUp = e => {
 
-            if (pressKey === false) {
+            if (this.pressKey === false) {
 
                 container.classList.add("hiddenButtons")
 
@@ -137,7 +110,7 @@ class Archivo {
 
                     if (!result) {
                         container.classList.remove("hiddenButtons")
-                        pressKey = true;
+                        this.pressKey = true;
                     }
                 }
 
@@ -155,10 +128,79 @@ class Archivo {
         const editButton = container.querySelector(".edit")
         if (editButton) {
             editButton.addEventListener("click", e => {
-                this.rename(prompt("Ingrese el nuevo nombre del archivo: "))
+                this.rename(prompt("Ingrese el nuevo nombre del archivo: "), container)
+            })
+        }
+
+        const deleteButton = container.querySelector(".delete")
+        if (deleteButton) {
+            deleteButton.addEventListener("click", e => {
+                let mensaje = "¿Deseas eliminar este archivo?";
+                if (this.isDirectory) mensaje = "¿Deseas eliminar esta carpeta y todos los archivos que esta contiene?";
+
+                if (confirm(mensaje)) {
+                    this.delete(container)
+                }
             })
         }
     }
+
+    download() {
+
+        let url = "/download/" + this.path.replaceAll("/", "---");
+        window.location = url;
+    }
+
+    rename(newName, HTMLObject) {
+        let info = {
+            ruta: this.path,
+            newName: newName
+        }
+        fetch("/rename", {
+            method: "POST",
+            body: JSON.stringify(info),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(r => {
+                if (r.ok === true) {
+
+                    HTMLObject.querySelector("span.name").innerText = newName;
+
+                }
+
+                HTMLObject.classList.remove("hiddenButtons")
+                this.pressKey = true;
+            })
+            .catch(err => console.warn("Error al renombrar el archivo::", err))
+
+    }
+
+    delete(HTMLObject) {
+        let info = {
+            path: this.path,
+        }
+        fetch("/deleteFile", {
+            method: "POST",
+            body: JSON.stringify(info),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(r => {
+                if (r.ok === true) {
+
+                    HTMLObject.remove();
+
+                }
+
+
+            })
+            .catch(err => console.warn("Error al eliminar archivo::", err))
+
+    }
+
 
     static setFilesList(path) {
         let url = "/getFilesList";

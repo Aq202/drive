@@ -10,13 +10,20 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('./public'))
+app.use('/favicon.ico', express.static('./public/imagenes/favicon.ico'))
 
 const repositoryPath = 'D:/diego/OneDrive/Documents/Transferencia de Archivos/';
 
 const storage = multer.diskStorage({
     destination: repositoryPath,
     filename: function (req, file, callback) {
-        callback(null, Date.now() + "-" + file.originalname);
+        // callback(null, Date.now() + "-" + file.originalname);
+
+        if (req.params.path !== undefined && req.params.path !== null && req.params.path !== "*") {
+            callback(null, req.params.path.replace(/---/g, "/") + file.originalname);
+        } else {
+            callback(null, file.originalname);
+        }
     }
 });
 const upload = multer({ storage: storage });
@@ -27,7 +34,8 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/fileTransfer.html')
 });
 
-app.post('/uploadFile', upload.array("file"), (req, res) => {
+app.post('/uploadFile/:path', upload.array("file"), (req, res) => {
+
     res.send("ok")
 });
 
@@ -84,7 +92,7 @@ app.get('/download/:path', (req, res) => {
 })
 
 app.post("/rename", (req, res) => {
-    console.log("Infoooo ", req.body)
+
     let path = req.body.ruta;
     let newName = req.body.newName;
 
@@ -101,6 +109,27 @@ app.post("/rename", (req, res) => {
     }
 })
 
+app.post("/deleteFile", (req, res) => {
+    //falta funcionalidad para eliminar carpetas
+    let path = req.body.path;
+    console.log(path)
+
+    if (path === undefined) res.status(400).send("");
+    try {
+        fs.unlink(repositoryPath + path, err => {
+            if (err) {
+                console.log("existe error che ", err)
+                res.status(400).send("");
+            } else {
+                res.status(200).send("")
+            }
+
+        })
+    } catch (ex) {
+        console.log("error en 118:: ", ex)
+    }
+})
+
 
 app.listen(2002, () => {
     console.log("Servidor corriendo en el puerto 2002")
@@ -110,21 +139,14 @@ app.listen(2002, () => {
 const renameFile = (route, newName) => {
 
     let promise = new Promise((res, rej) => {
-        let newRoute = route.replace(path.basename(route), newName)
+        let newRoute = route.replace(new RegExp(path.basename(route) + '$', 'i'), newName)
         let ext = "";
         if (fs.lstatSync(repositoryPath + route).isDirectory() === false) ext = path.extname(route);
 
         fs.rename(repositoryPath + route, repositoryPath + newRoute + ext, err => {
             if (err) {
-                console.log("ocurrió un erro al renombrar:: ", err)
                 rej(err)
-            } else {
-                console.log("todo cool", {
-                    old: repositoryPath + route,
-                    new: repositoryPath + newRoute + ext
-                })
             }
-
             res("ok")
         })
     })
