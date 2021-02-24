@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", e => {
 
 const uploadFile = form => {
     let request = new XMLHttpRequest();
-    let path = PathClass.actualPath.replaceAll("/", "---");
+    let path = PathClass.actualPath;
     let loadingBar = document.createElement("DIV");
 
     request.upload.addEventListener("loadstart", e => {
@@ -109,7 +109,7 @@ const uploadFile = form => {
 
 
     if (path !== "" && path != undefined && path != null) {
-        request.open('post', '/uploadFile/' + path);
+        request.open('post', '/uploadFile/' + path.replaceAll("/", "---"));
     } else {
         request.open('post', '/uploadFile/*');
     }

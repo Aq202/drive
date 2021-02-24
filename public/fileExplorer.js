@@ -178,6 +178,7 @@ class Archivo {
     }
 
     delete(HTMLObject) {
+
         let info = {
             path: this.path,
         }
