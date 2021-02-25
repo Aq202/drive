@@ -76,7 +76,9 @@ document.addEventListener("DOMContentLoaded", e => {
                 }
             }).then(r => r.json())
                 .then(result => {
-                    console.log(result)
+                    if (result.state == true) {
+                        new Archivo(folderName, result.path, true, "")
+                    }
                 })
         }
     })

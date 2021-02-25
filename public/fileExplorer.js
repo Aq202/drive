@@ -162,11 +162,12 @@ class Archivo {
                 "Content-Type": "application/json"
             }
         })
-            .then(r => {
-                if (r.ok === true) {
+            .then(r => r.json())
+            .then(result => {
+                if (result.state === true) {
 
                     HTMLObject.querySelector("span.name").innerText = newName;
-
+                    this.path = result.newPath;
                 }
 
                 HTMLObject.classList.remove("hiddenButtons")

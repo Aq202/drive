@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
-const { rejects } = require('assert');
+const rimraf = require('rimraf');
 
 const app = express();
 
@@ -99,11 +99,11 @@ app.post("/rename", (req, res) => {
     let newName = req.body.newName;
 
     if (path != undefined && newName != undefined) {
-        renameFile(path, newName).then(() => {
-            res.status(200).send("")
+        renameFile(path, newName).then(newPath => {
+            res.status(200).send({ state: true, newPath: newPath })
         }).catch(err => {
             console.log("error en 95:: ", err)
-            res.status(400).send(err)
+            res.status(400).send({ state: false })
         })
 
     } else {
@@ -120,10 +120,18 @@ app.post("/deleteFile", (req, res) => {
     try {
         fs.unlink(repositoryPath + path, err => {
             if (err) {
-                console.log("existe error che ", err)
-                res.status(400).send("");
+
+                if (err.code == "EPERM") {
+                    rimraf(repositoryPath + path, err => {
+                        if (err) return res.status(400).send("");
+                        return res.status(200).send("")
+
+                    })
+                } else {
+                    return res.status(400).send("");
+                }
             } else {
-                res.status(200).send("")
+                return res.status(200).send("")
             }
 
         })
@@ -138,7 +146,7 @@ app.post("/newFolder", (req, res) => {
     absolutePath = repositoryPath + relativePath;
 
     createFolder(absolutePath, 0).then(r => {
-        res.send({ state: true })
+        res.send({ state: true, path: relativePath })
     }, r => {
         return res.send({ state: false })
     })
@@ -186,9 +194,9 @@ const renameFile = (route, newName) => {
 
         fs.rename(repositoryPath + route, repositoryPath + newRoute + ext, err => {
             if (err) {
-                rej(err)
+                return rej(err)
             }
-            res("ok")
+            return res(newRoute + ext)
         })
     })
     return promise;
