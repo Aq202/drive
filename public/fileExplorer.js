@@ -127,7 +127,7 @@ class Archivo {
         const editButton = container.querySelector(".edit")
         if (editButton) {
             editButton.addEventListener("click", e => {
-                this.rename(prompt("Ingrese el nuevo nombre del archivo: "), container)
+                this.rename(prompt("Ingrese el nuevo nombre del archivo: ", this.name), container)
             })
         }
 
