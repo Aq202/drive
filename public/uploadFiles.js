@@ -55,6 +55,32 @@ document.addEventListener("DOMContentLoaded", e => {
         }
     })
 
+    document.getElementById("newFolder").addEventListener("click", e => {
+
+        let folderName = prompt("Ingresa el nombre de la carpeta: ");
+        let path = PathClass.actualPath;
+
+        if (path == null) path = "";
+
+        if (folderName.trim() != "") {
+            let obj = {
+                folderName: folderName,
+                path: path
+            }
+
+            fetch("/newFolder", {
+                method: "POST",
+                body: JSON.stringify(obj),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(r => r.json())
+                .then(result => {
+                    console.log(result)
+                })
+        }
+    })
+
 
 
 
@@ -67,7 +93,6 @@ const uploadFile = form => {
 
     let path = "";
     try {
-        path = PathClass.actualPath
         path = PathClass.actualPath.replaceAll("/", "---");
     } catch (ex) { }
 
