@@ -1,12 +1,15 @@
 class PathClass {
 
-    static actualPath = ""
+    static actualPath = null;
 
-    constructor(path, name) {
+    constructor(path, name, loadFiles) {
         this.path = path;
         this.name = name;
         this.createPathElement()
-        Archivo.setFilesList(this.path);
+
+        if (loadFiles !== false) {
+            Archivo.setFilesList(this.path);
+        }
     }
 
     createPathElement() {
@@ -23,9 +26,7 @@ class PathClass {
         if (obj !== undefined) {
             obj.addEventListener("click", e => {
                 Archivo.setFilesList(this.path);
-                PathClass.showPath(this.path)
-                PathClass.actualPath = this.path + "/"
-                console.log(this.path)
+                PathClass.showPath(this.path, this.name)
             })
         }
     }
@@ -33,6 +34,7 @@ class PathClass {
     static showPath(path) {
 
         PathClass.actualPath = path + "/"
+        PathClass.actualPath = PathClass.actualPath.replaceAll("//", "/")
 
         let pathSectionItems = document.querySelectorAll("#explorer-section .path span:not(:first-child)")
         if (pathSectionItems) {
@@ -40,11 +42,19 @@ class PathClass {
         }
 
         let individualPath = "";
+        let pathModules = path.replaceAll("//", "/").split("/").filter(item => item != "")
 
-        for (name of path.split("/")) {
+        for (let cont in pathModules) {
+            let name = pathModules[cont]
             if (name.trim() != "") {
                 individualPath += `${name}/`;
-                new PathClass(individualPath, name)
+
+                if (cont == pathModules.length - 1) {
+                    new PathClass(individualPath, name)
+                } else {
+                    new PathClass(individualPath, name, false)
+                }
+
             }
         }
     }

@@ -76,7 +76,7 @@ class Archivo {
             container.addEventListener("click", e => {
                 try {
                     if (this.pressKey === true) {
-                        PathClass.showPath(this.path)
+                        PathClass.showPath(this.path, this.name)
                     }
                 } catch (ex) { }
             })
@@ -88,7 +88,6 @@ class Archivo {
         const mouseDown = e => {
 
             setTimeout(() => {
-                console.log("Presionado")
                 this.pressKey = false;
             }, 500)
         }
@@ -128,7 +127,7 @@ class Archivo {
         const editButton = container.querySelector(".edit")
         if (editButton) {
             editButton.addEventListener("click", e => {
-                this.rename(prompt("Ingrese el nuevo nombre del archivo: "), container)
+                this.rename(prompt("Ingrese el nuevo nombre del archivo: ", this.name), container)
             })
         }
 
@@ -163,11 +162,12 @@ class Archivo {
                 "Content-Type": "application/json"
             }
         })
-            .then(r => {
-                if (r.ok === true) {
+            .then(r => r.json())
+            .then(result => {
+                if (result.state === true) {
 
                     HTMLObject.querySelector("span.name").innerText = newName;
-
+                    this.path = result.newPath;
                 }
 
                 HTMLObject.classList.remove("hiddenButtons")

@@ -298,3 +298,37 @@ form{
 div.delete:hover, div.edit:hover  {
     transform: rotate(15deg);
 }
+
+
+/*-----Toolbar-----*/
+#toolBar{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#toolBar div.icon{
+    width: 25px;
+    height: 25px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0 5px 0 5px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+#toolBar div.icon:hover{
+    transform: rotateZ(-30deg);
+}
+
+#toolBar #newFolder{
+    background-image: url(imagenes/newFolder.svg);
+}
+
+#toolBar #reload{
+    background-image: url(imagenes/reload.svg);
+}
