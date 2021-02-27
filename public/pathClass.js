@@ -1,6 +1,6 @@
 class PathClass {
 
-    static actualPath = null;
+    static actualPath = "";
 
     constructor(path, name, loadFiles) {
         this.path = path;

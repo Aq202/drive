@@ -155,6 +155,7 @@ class Archivo {
             ruta: this.path,
             newName: newName
         }
+        console.log("se está enviando: ", this.path, " como la ruta del archivo")
         fetch("/rename", {
             method: "POST",
             body: JSON.stringify(info),
