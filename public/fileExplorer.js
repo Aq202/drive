@@ -170,6 +170,7 @@ class Archivo {
 
                     HTMLObject.querySelector("span.name").innerText = newName;
                     this.path = result.newPath;
+                    this.name = newName;
                 }
 
                 HTMLObject.classList.remove("hiddenButtons")

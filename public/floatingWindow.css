@@ -16,6 +16,7 @@
 
 #floatingWindow > div{
     width: 95%;
+    height: auto;
     max-height: 95%;
     overflow: hidden;
     border-radius: 5px;
@@ -70,7 +71,7 @@
 #floatingWindow #window-body img, #floatingWindow #window-body > div{
     width: 100%;
     height: auto;
-    max-height: calc(90vh - 64px);
+    max-height: calc(85vh - 70px);
     background-color: rgb(48, 48, 48);
 }
 
