@@ -27,7 +27,8 @@ class Archivo {
                                     <span class="ext">${this.ext}</span>
                                 </div>
                                 <div class="edit"></div>
-                                <div class="delete"></div>`;
+                                <div class="delete"></div>
+                                <div class="preview"></div>`;
 
         const filesList = document.getElementById("filesList");
 

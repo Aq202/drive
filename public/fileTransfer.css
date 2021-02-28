@@ -271,13 +271,13 @@ form{
     opacity: 0;
 }
 
-#filesList > div > div.delete , #filesList > div > div.edit{
+#filesList > div > div.delete , #filesList > div > div.edit, #filesList > div > div.preview{
     display: none;
     opacity: 0;
     transition: .3s all ease;
 }
 
-#filesList > div.hiddenButtons > div.delete , #filesList > div.hiddenButtons > div.edit{
+#filesList > div.hiddenButtons > div.delete , #filesList > div.hiddenButtons > div.edit, #filesList > div.hiddenButtons > div.preview{
     display: block;
     opacity: 1;
     width: 32px;
@@ -295,7 +295,11 @@ form{
     background-image: url(imagenes/edit.svg);
 }
 
-div.delete:hover, div.edit:hover  {
+#filesList > div > div.preview {
+    background-image: url(imagenes/preview.svg);
+}
+
+div.delete:hover, div.edit:hover, div.preview:hover  {
     transform: rotate(15deg);
 }
 
