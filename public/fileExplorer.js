@@ -27,15 +27,15 @@ class Archivo {
                                     <span class="ext">${this.ext}</span>
                                 </div>
                                 <div class="edit"></div>
-                                <div class="delete"></div>
-                                <div class="preview"></div>`;
+                                <div class="delete"></div>`;
 
         const filesList = document.getElementById("filesList");
 
         //agregando eventos
         this.addEvents(container);
 
-
+        //agregando opcion para vista previa
+        this.preview(container)
 
 
         if (filesList) filesList.appendChild(container);
@@ -202,6 +202,58 @@ class Archivo {
             })
             .catch(err => console.warn("Error al eliminar archivo::", err))
 
+    }
+
+    preview(containter) {
+        console.log("estoy aqui xd")
+        let ext = this.ext.trim();
+        if (ext.startsWith(".")) ext = ext.substring(1);
+
+        if (this.image == "image" || ext == "pdf") {
+
+            let previewButton = document.createElement("div");
+            previewButton.classList.add("preview");
+            containter.appendChild(previewButton);
+
+            const floatingWindow = document.getElementById("floatingWindow")
+
+            if (floatingWindow) {
+
+                const windowHeader = floatingWindow.querySelector("#window-header h3")
+                const windowBody = floatingWindow.querySelector("#window-body")
+
+                if (windowHeader != undefined && windowBody != undefined) {
+                    let setPreviewContent;
+                    if (this.image == "image") {
+
+                        setPreviewContent = () => {
+                            windowHeader.innerText = this.name + this.ext;
+                            windowBody.innerHTML = `<img src="${"/files/" + this.path}">`
+                            floatingWindow.style.display = "flex";
+                        }
+
+                    } else if (ext == "pdf") {
+
+                        setPreviewContent = () => {
+                            windowHeader.innerText = this.name + this.ext;
+
+                            let cont = document.createElement("div")
+                            windowBody.innerHTML = "";
+                            windowBody.appendChild(cont)
+                            new visorPDF("/files/" + this.path, cont)
+
+                            floatingWindow.style.display = "flex";
+                        }
+
+                    } else {
+                        return
+                    }
+
+                    previewButton.addEventListener("click", setPreviewContent);
+
+                }
+            }
+        }
     }
 
 

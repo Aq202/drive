@@ -44,4 +44,14 @@ document.addEventListener("DOMContentLoaded", e => {
         }
     })
 
+    //-----ocultar ventana flotante de vista previa
+    const closeButton = document.querySelector("#close-window");
+    if (closeButton) {
+        closeButton.addEventListener("click", e => {
+
+            const window = document.getElementById("floatingWindow");
+            $(window).fadeOut(300)
+        })
+    }
+
 })

@@ -7,8 +7,16 @@
     <title>Transferencia de Archivos</title>
 
     <link rel="icon" href="favicon.ico">
-
     <link rel="stylesheet" href="fileTransfer.css">
+    <link rel="stylesheet" href="floatingWindow.css">
+    <link rel="stylesheet" href="visorPDF.css">
+    <link rel="stylesheet" href="scrollbar.css">
+
+    <script src="librerias/jQuery v3.4.1.js"></script>
+    <script src="librerias/pdf.min.js"></script>
+    <script src="librerias/pdf.worker.min.js"></script>
+
+    <script src="visorPDF.js"></script>
     <script src="uploadFiles.js"></script>
     <script src="fileExplorer.js"></script>
     <script src="pathClass.js"></script>
@@ -65,6 +73,20 @@
 
         </div>
     </div>
+
+    <!-- ventana flotante -->
+    <div id="floatingWindow">
+        <div>
+            <div id="window-header">
+                <h3>
+                    titulo.jpg
+                </h3>
+                <div id="close-window"></div>
+            </div>
+            <div id="window-body"></div>
+        </div>
+    </div>
+
 </body>
 
 </html>

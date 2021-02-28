@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 
+const repositoryPath = require('./server_files/repositoryPath')
 const files = require('./server_files/files');
 const folders = require('./server_files/folders');
 
@@ -10,6 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('./public'))
+app.use("/files", express.static(repositoryPath))
 app.use('/favicon.ico', express.static('./public/imagenes/favicon.ico'))
 
 //routers
