@@ -95,7 +95,8 @@ class visorPDF {
 
     ajustarZoom() {
 
-        var cont_width = this.visor.clientWidth * 0.9;
+        //se modificó para este proyecto, valor anterior * 0.9
+        var cont_width = this.visor.clientWidth * 1.05;
         var zoom = this.calcularZoom(cont_width);
 
         this.zoom = zoom;
